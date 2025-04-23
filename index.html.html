@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Malu, With Love</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .btn-yes {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .btn-no {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .btn-yes:hover {
+            background-color: #3e8e41;
+            transform: scale(1.05);
+        }
+        
+        .btn-no:hover {
+            background-color: #d32f2f;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .story {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .story-content {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff6b6b;
+            animation: float 4s ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .music-icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hey Malu ❤️</h1>
+        <p>
+            I've been trying to tell you about my feelings... I love you so much. I don't know what's going to happen, but I had to confess it before someone else does. You're the kindest and purest soul I could have found in this generation.
+        </p>
+        <p>
+            Will you be mine?
+        </p>
+        
+        <div class="buttons">
+            <button class="btn btn-yes" id="yesBtn">YES</button>
+            <button class="btn btn-no" id="noBtn">NO</button>
+        </div>
+        
+        <div id="response" class="hidden">
+            <h2>You've made me the happiest person in the world! ❤️</h2>
+            <p>I promise to cherish and love you every single day.</p>
+        </div>
+        
+        <div class="story" id="storyToggle">
+            <p>Click here to read our story ❤️</p>
+            <div class="story-content hidden" id="storyContent">
+                <p>Every moment with you has been magical. From the first time we met, I knew there was something special about you. Your smile, your laugh, the way you see the world - it all makes my heart skip a beat.</p>
+                <p>This is just the beginning of our beautiful journey together...</p>
+            </div>
+        </div>
+        
+        <div class="hearts" id="heartsContainer"></div>
+    </div>
+    
+    <div class="music-control" id="musicControl">
+        <div class="music-icon">🎵</div>
+    </div>
+    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <!-- Replace with actual Arctic Monkeys song if you have hosting -->
+    </audio>
+    
+    <script>
+        // Music control
+        const bgMusic = document.getElementById('bgMusic');
+        const musicControl = document.getElementById('musicControl');
+        let musicPlaying = false;
+        
+        // Try to play music (many browsers block autoplay)
+        document.addEventListener('click', function() {
+            if (!musicPlaying) {
+                bgMusic.play()
+                    .then(() => {
+                        musicPlaying = true;
+                        musicControl.innerHTML = '<div class="music-icon">🔊</div>';
+                    })
+                    .catch(error => {
+                        console.log("Autoplay prevented:", error);
+                    });
+            }
+        }, { once: true });
+        
+        musicControl.addEventListener('click', function() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicControl.innerHTML = '<div class="music-icon">🔇</div>';
+            } else {
+                bgMusic.play();
+                musicControl.innerHTML = '<div class="music-icon">🔊</div>';
+            }
+            musicPlaying = !musicPlaying;
+        });
+        
+        // Proposal buttons
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const responseDiv = document.getElementById('response');
+        let noCount = 0;
+        
+        yesBtn.addEventListener('click', function() {
+            document.querySelector('.buttons').classList.add('hidden');
+            responseDiv.classList.remove('hidden');
+            createHearts();
+        });
+        
+        noBtn.addEventListener('click', function() {
+            noCount++;
+            const yesBtn = document.getElementById('yesBtn');
+            
+            // Increase size of YES button
+            const currentSize = parseInt(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 2) + 'px';
+            
+            // Change text based on number of NO clicks
+            const messages = [
+                "Please say yes?",
+                "Are you sure?",
+                "Give me a chance!",
+                "I'll make you happy!",
+                "Pretty please?",
+                "You're breaking my heart!",
+                "Just click yes already!"
+            ];
+            
+            const messageIndex = Math.min(noCount - 1, messages.length - 1);
+            yesBtn.textContent = messages[messageIndex];
+            
+            // Move YES button randomly
+            const x = Math.random() * 100 - 50;
+            const y = Math.random() * 100 - 50;
+            yesBtn.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        
+        // Story toggle
+        const storyToggle = document.getElementById('storyToggle');
+        const storyContent = document.getElementById('storyContent');
+        
+        storyToggle.addEventListener('click', function() {
+            storyContent.classList.toggle('hidden');
+        });
+        
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('heartsContainer');
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = Math.random() * 100 + '%';
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    heartsContainer.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 4000);
+                }, i * 200);
+            }
+            
+            // Keep creating hearts
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = '100%';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heartsContainer.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
